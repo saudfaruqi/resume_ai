@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume AI - {% block title %}{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        // Add Tailwind dark mode configuration
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
+
+    <link rel="icon" href="resume ai/static/img/favicon.png" type="image/png" />
+
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-200">
+    {% if session.username %}
+    <nav class="bg-white dark:bg-gray-800 shadow-lg">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <!-- Logo and Brand -->
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <a href="{{ url_for('dashboard') }}" class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+                Resume AI
+              </a>
+            </div>
+          </div>
+  
+          <!-- Desktop Navigation -->
+          <div class="hidden md:flex md:items-center md:space-x-8">
+            <a href="{{ url_for('dashboard') }}"
+              class="{% if request.endpoint == 'dashboard' %}border-indigo-500 text-gray-900 dark:text-white{% else %}border-transparent text-gray-500 dark:text-gray-400{% endif %} hover:border-gray-300 hover:text-gray-700 dark:hover:text-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+              Dashboard
+            </a>
+            <a href="{{ url_for('my_resumes') }}"
+              class="{% if request.endpoint == 'my_resumes' %}border-indigo-500 text-gray-900 dark:text-white{% else %}border-transparent text-gray-500 dark:text-gray-400{% endif %} hover:border-gray-300 hover:text-gray-700 dark:hover:text-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+              My Resumes
+            </a>
+            <a href="{{ url_for('new_refinement') }}"
+              class="{% if request.endpoint == 'new_refinement' %}border-indigo-500 text-gray-900 dark:text-white{% else %}border-transparent text-gray-500 dark:text-gray-400{% endif %} hover:border-gray-300 hover:text-gray-700 dark:hover:text-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+              New Refinement
+            </a>
+          </div>
+  
+          <!-- Desktop Right Side -->
+          <div class="hidden md:flex md:items-center md:space-x-4">
+            <span class="text-sm text-gray-500 dark:text-gray-400">Welcome, {{ session.username }}!</span>
+            <a href="{{ url_for('logout') }}"
+              class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600">
+              Logout
+            </a>
+          </div>
+  
+          <!-- Mobile menu button -->
+          <div class="flex items-center md:hidden">
+            <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-controls="mobile-menu" aria-expanded="false">
+              <span class="sr-only">Open main menu</span>
+              <!-- Icon when menu is closed -->
+              <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+              <!-- Icon when menu is open -->
+              <svg class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Mobile menu -->
+      <div class="bg-white dark:bg-gray-800 hidden md:hidden absolute w-[100%]" id="mobile-menu">
+        <div class="pt-2 pb-3 space-y-1">
+          <a href="{{ url_for('dashboard') }}"
+            class="{% if request.endpoint == 'dashboard' %}bg-indigo-50 border-indigo-500 text-indigo-700 dark:bg-gray-700 dark:text-white{% else %}border-transparent text-gray-500 dark:text-gray-400{% endif %} block pl-3 pr-4 py-2 border-l-4 text-base font-medium hover:bg-gray-50 dark:hover:bg-gray-700">
+            Dashboard
+          </a>
+          <a href="{{ url_for('my_resumes') }}"
+            class="{% if request.endpoint == 'my_resumes' %}bg-indigo-50 border-indigo-500 text-indigo-700 dark:bg-gray-700 dark:text-white{% else %}border-transparent text-gray-500 dark:text-gray-400{% endif %} block pl-3 pr-4 py-2 border-l-4 text-base font-medium hover:bg-gray-50 dark:hover:bg-gray-700">
+            My Resumes
+          </a>
+          <a href="{{ url_for('new_refinement') }}"
+            class="{% if request.endpoint == 'new_refinement' %}bg-indigo-50 border-indigo-500 text-indigo-700 dark:bg-gray-700 dark:text-white{% else %}border-transparent text-gray-500 dark:text-gray-400{% endif %} block pl-3 pr-4 py-2 border-l-4 text-base font-medium hover:bg-gray-50 dark:hover:bg-gray-700">
+            New Refinement
+          </a>
+        </div>
+        <div class="pt-4 pb-3 border-t border-gray-200 dark:border-gray-700">
+          <div class="flex items-center px-4 space-x-4">
+            <span class="text-sm text-gray-500 dark:text-gray-400">Welcome, {{ session.username }}!</span>
+            <button id="mobile-theme-toggle" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2">
+              <i class="fas fa-sun hidden dark:inline-block"></i>
+              <i class="fas fa-moon inline-block dark:hidden"></i>
+            </button>
+          </div>
+          <div class="mt-3 px-2">
+            <a href="{{ url_for('logout') }}"
+              class="block w-full px-4 py-2 text-center text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600">
+              Logout
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    {% endif %}
+
+    <main class="max-w-auto mx-auto py-6 sm:px-6 lg:px-0 p-1">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="mb-4 rounded-md p-4 {% if category == 'error' %}bg-red-50 dark:bg-red-900 text-red-700 dark:text-red-200{% else %}bg-green-50 dark:bg-green-900 text-green-700 dark:text-green-200{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcons = mobileMenuButton.getElementsByTagName('svg');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            menuIcons[0].classList.toggle('hidden');
+            menuIcons[1].classList.toggle('hidden');
+        });
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        }
+    
+        // Attach the toggle event to both mobile and desktop buttons
+        document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+        document.getElementById('mobile-theme-toggle').addEventListener('click', toggleTheme);
+    
+        // Check for saved theme preference, otherwise use system preference
+        if (localStorage.getItem('color-theme') === 'dark' || 
+            (!localStorage.getItem('color-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+</body>
+</html>

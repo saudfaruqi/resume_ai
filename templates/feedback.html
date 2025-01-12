@@ -1,0 +1,56 @@
+<!-- templates/feedback.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="min-h-auto bg-gray-50 dark:bg-gray-900 py-4 px-0 lg:px-4 lg:px-2">
+  <div class="max-w-3xl mx-auto">
+    <h2 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 mb-8">
+        Provide Feedback
+        <div class="h-1 w-32 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full mt-2"></div>
+    </h2>
+    
+    <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 transition-all duration-300">
+        <div class="p-6">
+            <form method="POST" action="{{ url_for('submit_feedback') }}" class="space-y-6">
+                <input type="hidden" name="resume_id" value="{{ resume_id }}">
+                
+                <div class="space-y-2">
+                    <label for="feedback" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Your Feedback
+                    </label>
+                    <textarea
+                        id="feedback"
+                        name="feedback"
+                        rows="4"
+                        required
+                        placeholder="Enter your feedback here..."
+                        class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700/50 dark:text-gray-300 backdrop-blur-sm transition-all duration-200"
+                    ></textarea>
+                </div>
+                
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Rating
+                    </label>
+                    <div class="flex items-center space-x-2">
+                        {% for i in range(5, 0, -1) %}
+                        <div class="relative">
+                            <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}" class="sr-only peer" {% if i == 5 %}checked{% endif %}>
+                            <label for="star{{ i }}" class="cursor-pointer text-3xl text-gray-300 peer-checked:text-yellow-400 hover:text-yellow-400 transition-colors duration-200">
+                                ★
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="flex justify-end">
+                    <button type="submit" class="px-6 py-2.5 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transform hover:-translate-y-px transition-all duration-200">
+                        Submit Feedback
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

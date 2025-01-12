@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 min-h-screen">
+    <div class="min-h-screen p-4">
+        <div class="max-w-7xl mx-auto">
+            <!-- Animated Header Section -->
+            <div class="flex justify-between items-center mb-8 animate-fade-in">
+                <div class="relative">
+                    <h1 class="lg:text-4xl text-xl font-bold text-white relative z-10">
+                        Dashboard Overview
+                        <div class="absolute -bottom-2 left-0 w-1/2 h-1 bg-blue-500 rounded animate-pulse"></div>
+                    </h1>
+                </div>
+                <div class="flex space-x-4">
+                    <button onclick="location.href='?timeframe=week'" 
+                            class="px-6 py-2 rounded-lg relative overflow-hidden transition-all duration-300 {{ 'bg-blue-600 text-white' if timeframe == 'week' else 'bg-gray-800 text-gray-300' }} hover:bg-blue-700 backdrop-blur-sm">
+                        <span class="relative z-10">Week</span>
+                        <div class="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 opacity-0 hover:opacity-100 transition-opacity"></div>
+                    </button>
+                    <button onclick="location.href='?timeframe=month'" 
+                            class="px-6 py-2 rounded-lg relative overflow-hidden transition-all duration-300 {{ 'bg-blue-600 text-white' if timeframe == 'month' else 'bg-gray-800 text-gray-300' }} hover:bg-blue-700 backdrop-blur-sm">
+                        <span class="relative z-10">Month</span>
+                        <div class="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 opacity-0 hover:opacity-100 transition-opacity"></div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Animated Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <!-- Total Resumes Card -->
+                <div class="bg-gray-800/50 rounded-xl backdrop-blur-lg border border-gray-700/50 shadow-lg overflow-hidden transition-transform hover:scale-105 hover:shadow-2xl">
+                    <div class="p-6 relative">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl"></div>
+                        <div class="flex items-center relative">
+                            <div class="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow-lg">
+                                <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-400">Total Resumes</p>
+                                <p class="text-3xl font-bold text-white animate-pulse">{{ total_resumes }}</p>
+                                <p class="text-sm text-gray-300 mt-2">All your resumes, one click away!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <!-- User Engagement Card with dynamic data -->
+                <div class="bg-gray-800/50 rounded-xl backdrop-blur-lg border border-gray-700/50 shadow-lg overflow-hidden transition-transform hover:scale-105 hover:shadow-2xl">
+                  <div class="p-6 relative">
+                      <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl"></div>
+                      <div class="flex items-center relative">
+                          <div class="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow-lg">
+                              <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12l5 5L20 7" />
+                              </svg>
+                          </div>
+                          <div class="ml-4">
+                              <p class="text-sm font-medium text-gray-400">Engagement This Week</p>
+                              <p class="text-3xl font-bold text-white" id="user-engagement">
+                                  {% if user_engagement == 'N/A' %}
+                                      N/A
+                                  {% else %}
+                                      {{ user_engagement }}%
+                                  {% endif %}
+                              </p>
+                              <p class="text-sm text-gray-300 mt-2">Stay active, stay engaged!</p>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+
+
+                <!-- Active Users Card -->
+                <div class="bg-gray-800/50 rounded-xl backdrop-blur-lg border border-gray-700/50 shadow-lg overflow-hidden transition-transform hover:scale-105 hover:shadow-2xl">
+                    <div class="p-6 relative">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl"></div>
+                        <div class="flex items-center relative">
+                            <div class="p-3 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg shadow-lg">
+                                <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                </svg>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-400">Total Members</p>
+                                <p class="text-3xl font-bold text-white">{{ active_users }}</p>
+                                <p class="text-sm text-gray-300 mt-2">Our community is growing stronger!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Success Rate Card -->
+                <div class="bg-gray-800/50 rounded-xl backdrop-blur-lg border border-gray-700/50 shadow-lg overflow-hidden transition-transform hover:scale-105 hover:shadow-2xl">
+                    <div class="p-6 relative">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full blur-2xl"></div>
+                        <div class="flex items-center relative">
+                            <div class="p-3 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg shadow-lg">
+                                <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div class="ml-4">
+                              <p class="text-sm font-medium text-gray-400">Resume Generated</p>
+                              <p class="text-3xl font-bold text-white">{{ success_rate }}%</p>
+                              <p class="text-sm text-gray-300 mt-2">Your resume is ready to shine!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="bg-gray-800/50 rounded-xl backdrop-blur-lg border border-gray-700/50 shadow-lg p-8 relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5"></div>
+                <h2 class="text-2xl font-bold text-white mb-1 relative">Recent Activity</h2>
+                <p class="text-sm text-gray-300 mt-2 mb-6">Stay up to date, always in the loop!</p>
+                <div class="space-y-4 relative">
+                  {% for activity in recent_activity %}
+                  <div class="swipeable-activity p-4 rounded-lg bg-gray-700/50 backdrop-blur-sm border border-gray-600/50 transition-all duration-300 hover:bg-gray-700/70 hover:border-gray-500/50"
+                       data-activity-id="{{ activity.id }}" 
+                       data-timestamp="{{ activity.timestamp.timestamp() if activity.timestamp else 0 }}">
+                      <p class="text-sm font-medium text-white">{{ activity.activity_type }}</p>
+                      <p class="text-sm text-gray-400 flex items-center mt-2">
+                          <svg class="h-4 w-4 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                          {% if activity.timestamp %}
+                              {{ activity.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}
+                          {% else %}
+                              N/A
+                          {% endif %}
+                      </p>
+                      <div class="countdown-timer text-sm text-gray-400"></div> <!-- Countdown display -->
+                  </div>
+                  {% endfor %}
+                  
+                  
+              </div>              
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @keyframes fade-in {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-fade-in {
+        animation: fade-in 0.6s ease-out forwards;
+    }
+</style>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      // Get all the activities
+      const activities = document.querySelectorAll('.swipeable-activity');
+
+      activities.forEach(activity => {
+        const timestamp = parseInt(activity.getAttribute('data-timestamp')) * 1000; // Convert timestamp to milliseconds
+          const countdownElement = activity.querySelector('.countdown-timer');
+          const activityId = activity.getAttribute('data-activity-id');
+          
+          // Log the timestamp and current time for debugging
+          const currentTime = Date.now();
+          
+          const timeLeft = timestamp + 86400000 - currentTime; // 86400000 ms = 1 day
+          
+          if (timeLeft <= 0) {
+              // If the activity is older than 1 day, remove it
+              activity.remove();
+              console.log('Activity removed due to being older than a day');
+          } else {
+              // Display countdown timer
+              const countdownInterval = setInterval(function() {
+                  const remainingTime = timestamp + 86400000 - Date.now();
+                  if (remainingTime <= 0) {
+                      // Clear the interval and remove the activity after 1 day
+                      clearInterval(countdownInterval);
+                      activity.remove();
+                      console.log('Activity removed after countdown');
+                  } else {
+                      const hours = Math.floor(remainingTime / 3600000);
+                      const minutes = Math.floor((remainingTime % 3600000) / 60000);
+                      const seconds = Math.floor((remainingTime % 60000) / 1000);
+                      countdownElement.textContent = `${hours}h ${minutes}m ${seconds}s`;
+                  }
+              }, 1000);
+          }
+      });
+  });
+</script>
+
+
+<script>
+  // Function to fetch user engagement score dynamically
+function fetchUserEngagement() {
+  const userId = "{{ user_id }}"; // Assuming user_id is set from the backend
+
+  // Fetch user engagement score from the backend
+  fetch('/calculate_score', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          user_id: userId,
+          total_resumes: {{ total_resumes }}
+      })
+  })
+  .then(response => response.json())
+  .then(data => {
+      // Ensure the element is available before updating
+      const engagementElement = document.getElementById('user-engagement');
+      if (engagementElement) {
+          engagementElement.innerText = data.score;
+      }
+  })
+  .catch(error => console.error('Error fetching user engagement:', error));
+}
+
+// Call the function to fetch user engagement when the page loads
+window.onload = function() {
+  fetchUserEngagement();
+};
+
+</script>
+
+{% endblock %}

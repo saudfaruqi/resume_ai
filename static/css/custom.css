@@ -1,0 +1,44 @@
+/* static/css/custom.css */
+.rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+.rating input {
+    display: none;
+}
+
+.rating label {
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    margin: 0 2px;
+    background-image: url('../img/star-empty.svg');
+    background-size: contain;
+}
+
+.rating input:checked ~ label,
+.rating label:hover,
+.rating label:hover ~ label {
+    background-image: url('../img/star-filled.svg');
+}
+
+.dashboard-card {
+    transition: transform 0.2s;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+}
+
+#deleteModal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#deleteModal .modal-content {
+    max-height: 90vh; /* Limits modal height */
+    overflow-y: auto; /* Adds vertical scrolling */
+}
